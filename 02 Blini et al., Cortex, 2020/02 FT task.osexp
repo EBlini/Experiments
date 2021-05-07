@@ -1,0 +1,615 @@
+---
+API: 2.1
+OpenSesame: 3.2.4
+Platform: nt
+---
+set width 1024
+set uniform_coordinates yes
+set title "New experiment"
+set subject_parity even
+set subject_nr 0
+set start experiment
+set sound_sample_size -16
+set sound_freq 48000
+set sound_channels 2
+set sound_buf_size 1024
+set sampler_backend legacy
+set round_decimals 2
+set mouse_backend psycho
+set keyboard_backend psycho
+set height 768
+set fullscreen no
+set form_clicks no
+set foreground white
+set font_underline no
+set font_size 18
+set font_italic no
+set font_family mono
+set font_bold no
+set experiment_path "C:\\Users\\Invites Labo\\Desktop\\DRAFT\\GVS interference\\Scripts"
+set disable_garbage_collection yes
+set description "The main experiment item"
+set coordinates uniform
+set compensation 0
+set color_backend psycho
+set clock_backend psycho
+set canvas_backend psycho
+set background black
+
+define feedback End
+	set reset_variables yes
+	set duration keypress
+	set description "Provides feedback to the participant"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=40 html=yes show_if=always text="The experiment is over, THANK YOU!<br /><br /><br />You have earned:<br /><br />[Cash]" x=0 y=0 z_index=0
+
+define loop ExpLoop
+	set source table
+	set repeat 18
+	set order random
+	set description "Repeatedly runs another item"
+	set cycles 36
+	set continuous no
+	set break_if_on_first yes
+	set break_if never
+	setcycle 0 Target Left
+	setcycle 0 Distractors Left
+	setcycle 0 TargetCondition 0
+	setcycle 0 DistractorCondition 0
+	setcycle 0 Congruency Congruent
+	setcycle 1 Target Right
+	setcycle 1 Distractors Left
+	setcycle 1 TargetCondition 0
+	setcycle 1 DistractorCondition 0
+	setcycle 1 Congruency Incongruent
+	setcycle 2 Target Left
+	setcycle 2 Distractors Right
+	setcycle 2 TargetCondition 0
+	setcycle 2 DistractorCondition 0
+	setcycle 2 Congruency Incongruent
+	setcycle 3 Target Right
+	setcycle 3 Distractors Right
+	setcycle 3 TargetCondition 0
+	setcycle 3 DistractorCondition 0
+	setcycle 3 Congruency Congruent
+	setcycle 4 Target Left
+	setcycle 4 Distractors Left
+	setcycle 4 TargetCondition 0
+	setcycle 4 DistractorCondition -10
+	setcycle 4 Congruency Congruent
+	setcycle 5 Target Right
+	setcycle 5 Distractors Left
+	setcycle 5 TargetCondition 0
+	setcycle 5 DistractorCondition -10
+	setcycle 5 Congruency Incongruent
+	setcycle 6 Target Left
+	setcycle 6 Distractors Right
+	setcycle 6 TargetCondition 0
+	setcycle 6 DistractorCondition -10
+	setcycle 6 Congruency Incongruent
+	setcycle 7 Target Right
+	setcycle 7 Distractors Right
+	setcycle 7 TargetCondition 0
+	setcycle 7 DistractorCondition -10
+	setcycle 7 Congruency Congruent
+	setcycle 8 Target Left
+	setcycle 8 Distractors Left
+	setcycle 8 TargetCondition 0
+	setcycle 8 DistractorCondition 10
+	setcycle 8 Congruency Congruent
+	setcycle 9 Target Right
+	setcycle 9 Distractors Left
+	setcycle 9 TargetCondition 0
+	setcycle 9 DistractorCondition 10
+	setcycle 9 Congruency Incongruent
+	setcycle 10 Target Left
+	setcycle 10 Distractors Right
+	setcycle 10 TargetCondition 0
+	setcycle 10 DistractorCondition 10
+	setcycle 10 Congruency Incongruent
+	setcycle 11 Target Right
+	setcycle 11 Distractors Right
+	setcycle 11 TargetCondition 0
+	setcycle 11 DistractorCondition 10
+	setcycle 11 Congruency Congruent
+	setcycle 12 Target Left
+	setcycle 12 Distractors Left
+	setcycle 12 TargetCondition -10
+	setcycle 12 DistractorCondition 0
+	setcycle 12 Congruency Congruent
+	setcycle 13 Target Right
+	setcycle 13 Distractors Left
+	setcycle 13 TargetCondition -10
+	setcycle 13 DistractorCondition 0
+	setcycle 13 Congruency Incongruent
+	setcycle 14 Target Left
+	setcycle 14 Distractors Right
+	setcycle 14 TargetCondition -10
+	setcycle 14 DistractorCondition 0
+	setcycle 14 Congruency Incongruent
+	setcycle 15 Target Right
+	setcycle 15 Distractors Right
+	setcycle 15 TargetCondition -10
+	setcycle 15 DistractorCondition 0
+	setcycle 15 Congruency Congruent
+	setcycle 16 Target Left
+	setcycle 16 Distractors Left
+	setcycle 16 TargetCondition -10
+	setcycle 16 DistractorCondition -10
+	setcycle 16 Congruency Congruent
+	setcycle 17 Target Right
+	setcycle 17 Distractors Left
+	setcycle 17 TargetCondition -10
+	setcycle 17 DistractorCondition -10
+	setcycle 17 Congruency Incongruent
+	setcycle 18 Target Left
+	setcycle 18 Distractors Right
+	setcycle 18 TargetCondition -10
+	setcycle 18 DistractorCondition -10
+	setcycle 18 Congruency Incongruent
+	setcycle 19 Target Right
+	setcycle 19 Distractors Right
+	setcycle 19 TargetCondition -10
+	setcycle 19 DistractorCondition -10
+	setcycle 19 Congruency Congruent
+	setcycle 20 Target Left
+	setcycle 20 Distractors Left
+	setcycle 20 TargetCondition -10
+	setcycle 20 DistractorCondition 10
+	setcycle 20 Congruency Congruent
+	setcycle 21 Target Right
+	setcycle 21 Distractors Left
+	setcycle 21 TargetCondition -10
+	setcycle 21 DistractorCondition 10
+	setcycle 21 Congruency Incongruent
+	setcycle 22 Target Left
+	setcycle 22 Distractors Right
+	setcycle 22 TargetCondition -10
+	setcycle 22 DistractorCondition 10
+	setcycle 22 Congruency Incongruent
+	setcycle 23 Target Right
+	setcycle 23 Distractors Right
+	setcycle 23 TargetCondition -10
+	setcycle 23 DistractorCondition 10
+	setcycle 23 Congruency Congruent
+	setcycle 24 Target Left
+	setcycle 24 Distractors Left
+	setcycle 24 TargetCondition 10
+	setcycle 24 DistractorCondition 0
+	setcycle 24 Congruency Congruent
+	setcycle 25 Target Right
+	setcycle 25 Distractors Left
+	setcycle 25 TargetCondition 10
+	setcycle 25 DistractorCondition 0
+	setcycle 25 Congruency Incongruent
+	setcycle 26 Target Left
+	setcycle 26 Distractors Right
+	setcycle 26 TargetCondition 10
+	setcycle 26 DistractorCondition 0
+	setcycle 26 Congruency Incongruent
+	setcycle 27 Target Right
+	setcycle 27 Distractors Right
+	setcycle 27 TargetCondition 10
+	setcycle 27 DistractorCondition 0
+	setcycle 27 Congruency Congruent
+	setcycle 28 Target Left
+	setcycle 28 Distractors Left
+	setcycle 28 TargetCondition 10
+	setcycle 28 DistractorCondition -10
+	setcycle 28 Congruency Congruent
+	setcycle 29 Target Right
+	setcycle 29 Distractors Left
+	setcycle 29 TargetCondition 10
+	setcycle 29 DistractorCondition -10
+	setcycle 29 Congruency Incongruent
+	setcycle 30 Target Left
+	setcycle 30 Distractors Right
+	setcycle 30 TargetCondition 10
+	setcycle 30 DistractorCondition -10
+	setcycle 30 Congruency Incongruent
+	setcycle 31 Target Right
+	setcycle 31 Distractors Right
+	setcycle 31 TargetCondition 10
+	setcycle 31 DistractorCondition -10
+	setcycle 31 Congruency Congruent
+	setcycle 32 Target Left
+	setcycle 32 Distractors Left
+	setcycle 32 TargetCondition 10
+	setcycle 32 DistractorCondition 10
+	setcycle 32 Congruency Congruent
+	setcycle 33 Target Right
+	setcycle 33 Distractors Left
+	setcycle 33 TargetCondition 10
+	setcycle 33 DistractorCondition 10
+	setcycle 33 Congruency Incongruent
+	setcycle 34 Target Left
+	setcycle 34 Distractors Right
+	setcycle 34 TargetCondition 10
+	setcycle 34 DistractorCondition 10
+	setcycle 34 Congruency Incongruent
+	setcycle 35 Target Right
+	setcycle 35 Distractors Right
+	setcycle 35 TargetCondition 10
+	setcycle 35 DistractorCondition 10
+	setcycle 35 Congruency Congruent
+	run ExpProc
+
+define sequence ExpProc
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run InlineCanvas always
+	run Fixation always
+	run Jitter always
+	run Target always
+	run Response always
+	run Feedback always
+	run Log always
+	run Pause "[Trial]== 217 or [Trial]== 421"
+
+define inline_script Feedback
+	set description "Executes Python code"
+	___run__
+	
+	#update vectors of RTs
+	all_rts[trial]= self.get("response_time")
+	
+	#get percentile of response, only if you have enough trials
+	percentile= stats.percentileofscore(all_rts[0:trial], self.get("response_time"))
+	
+	#AccurAcy
+	if self.get("response") == correct_response:
+		exp.set("Accuracy", 1)
+	else:
+		exp.set("Accuracy", 0)
+	
+	
+	#Points at stake, depends on the distractor condition in pilot2
+	stake= exp.get("DistractorCondition")
+	exp.set("Stake", stake)
+	
+	#much more simple feedback
+	if exp.get("Accuracy")==1 and percentile < 75:
+		gain= stake
+		if gain <0:
+			gain= 0
+	else:
+		gain= stake
+		if gain > 0:
+			gain= 0 
+			
+	total_gain= total_gain + gain	
+	
+	#Update cash here (points so far/maximum available points) * 25 euros max
+	cash= (total_gain/2160.0)*25.0
+	cash= round(cash, 2)
+	
+	#clear
+	feedback.clear()
+	
+	#2prepare feedback
+	#following peer review of the protocol, we now exclude the running total
+	#the fb now consists in two lines, moved at the center of the screen
+	if exp.get("Accuracy")== 1 and percentile < 75:
+		feedback.text("Correct!", x= 0, y= -15, font_size= 24, font_bold= True)
+		if gain>= 0:
+			feedback.text("+" + str(gain) + " p", x= 0, y= 20, font_size= 24, font_bold= True)
+		else:
+			feedback.text(str(gain) + " p", x= 0, y= 20, font_size= 24, font_bold= True)
+		#feedback.text(str(cash) + " euros", x= 0, y= 30, font_size= 24, font_bold= True)
+	else:
+		if exp.get("Accuracy")== 0:
+			feedback.text("Incorrect!", x= 0, y= -15, font_size= 24, font_bold= True)
+		else:
+			feedback.text("Trop lent!", x= 0, y= -15, font_size= 24, font_bold= True)
+		
+		if gain>= 0:
+			feedback.text("+" + str(gain) + " p", x= 0, y= 20, font_size= 24, font_bold= True)
+		else:
+			feedback.text(str(gain) + " p", x= 0, y= 20, font_size= 24, font_bold= True)
+		
+		#feedback.text(str(cash) + " euros", x= 0, y= 30, font_size= 24, font_bold= True)
+		
+		
+		
+	feedback.show()
+	
+	clock.sleep(995)
+	
+	#Update trial
+	trial= trial + 1
+	
+	exp.set("Percentile_rts", percentile)
+	exp.set("Gain", gain)
+	exp.set("Total_gain", total_gain)
+	exp.set("Trial", trial - 1)
+	exp.set("Cash", cash)
+	__end__
+	set _prepare ""
+
+define inline_script Fixation
+	set description "Executes Python code"
+	___run__
+	fixation.show()
+	__end__
+	set _prepare ""
+
+define inline_script Init
+	set description "Executes Python code"
+	___run__
+	
+	#trial number
+	trial= 1
+	exp.set('Trial', trial)
+	
+	#this is the real experiment - not the practice
+	phase= "Experiment"
+	exp.set('Phase', phase)
+	
+	#response times vector 
+	#first value set to 1000 to allow computing percentiles
+	all_rts= [None for x in range(10000)]
+	all_rts[0]= 1000
+	
+	#percentile of RTs
+	percentile= None
+	
+	#actual reward 
+	actual_reward= 0
+	
+	#all points gained
+	gain= 0
+	total_gain= 0
+	cash= 0
+	
+	#arrows
+	arrow_length= 20
+	arrow_gap= 2
+	
+	
+	#set the seed so the same subject will have the same (random) assigment of contingencies
+	#this part changed after protocol peer review
+	#now we keep fixed contingencies to avoid potential semantic conflict
+	#import random
+	
+	#Seed= self.get('subject_nr') * 100
+	#random.seed(Seed)
+	#randomize
+	#RandColor= ['Red', 'Royalblue', 'Green']
+	#random.shuffle(RandColor) 
+	
+	#colours corresponding to no stake, punishment, high reward
+	#Col1= RandColor[0]
+	#Col2= RandColor[1]
+	#Col3= RandColor[2]
+	
+	#fixed contingencies
+	Col1= 'Royalblue'
+	Col2= 'Red'
+	Col3= 'Green'
+	
+	exp.set("Col1", Col1)
+	exp.set("Col2", Col2)
+	exp.set("Col3", Col3)
+	
+	
+	#french translation
+	def my_translate(color):
+		if color== "Red":
+			fc= "ROUGES"
+		elif color== "Royalblue":
+			fc= "BLEUS"
+		else:
+			fc= "VERTES"
+		
+		return fc
+	
+	fc1= my_translate(Col1)
+	fc2= my_translate(Col2)
+	fc3= my_translate(Col3)
+	
+	exp.set("FC1", fc1)
+	exp.set("FC2", fc2)
+	exp.set("FC3", fc3)
+	
+	# libraries
+	from scipy import stats 
+	__end__
+	set _prepare ""
+
+define inline_script InlineCanvas
+	set description "Executes Python code"
+	___run__
+	
+	Target.clear()
+	
+	#choose colors
+	#in a previous version of the task, the color of the central arrow was
+	#pre-determined from the list, balanced
+	#then, we have decided to maintain white for all conditions
+	#to avoid mismatches with flanking colors, signalling reward
+	#if exp.get("TargetCondition")== 0:
+	#	target_color= Col1
+	#elif exp.get("TargetCondition")== -10:
+	#	target_color= Col2
+	#else:
+	#	target_color= Col3
+	target_color= "white"
+	
+	if exp.get("DistractorCondition")== 0:
+		flankers_color= Col1
+	elif exp.get("DistractorCondition")== -10:
+		flankers_color= Col2
+	else:
+		flankers_color= Col3
+	
+	
+	#copy re-colored flankers
+	if exp.get("Distractors")== "Left":
+		FlankersLeft["E1"].color= flankers_color
+		FlankersLeft["E2"].color= flankers_color
+		FlankersLeft["E3"].color= flankers_color
+		FlankersLeft["E4"].color= flankers_color
+		Target.copy(FlankersLeft)
+	else:
+		FlankersRight["E1"].color= flankers_color
+		FlankersRight["E2"].color= flankers_color
+		FlankersRight["E3"].color= flankers_color
+		FlankersRight["E4"].color= flankers_color
+		Target.copy(FlankersRight)
+	
+	#add colored target	
+	if exp.get("Target")== "Left":
+		Target.text("←", x= 0, y= -5, font_size= arrow_length, color= target_color)
+	else:
+		Target.text("→", x= 0, y= -5, font_size= arrow_length, color= target_color)
+		
+	
+	#correct response
+	if exp.get("Target")== "Left":
+		correct_response= "left"
+	else:
+		correct_response= "right"
+		
+	exp.set("Correct_Response", correct_response) 
+	__end__
+	set _prepare ""
+
+define feedback Instructions
+	set reset_variables yes
+	set duration keypress
+	set description "Provides feedback to the participant"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="Dans cette expérience, vous verrez plusieurs flèches au centre de l'écran.<br /><br />La tâche consiste à indiquer dans quelle direction la flèche CENTRALE pointe.<br /><br />Quand la flèche centrale pointe vers la GAUCHE -> appuyez sur la touche GAUCHE<br /><br />Quand la flèche centrale pointe vers la DROITE -> appuyez sur la touche DROITE<br /><br /><br />Les autres flèches indiqueront la même direction ou des directions différentes par rapport à la flèche centrale. De plus, les flèches seront colorées en vert, en rouge ou en bleu. La couleur des 4 flèches sur les côtes vous informera des points en jeu.<br /><br />Des flèches [FC1] vous indiquent qu'aucun point n'est en jeu.<br /><br />Des flèches [FC2] vous indiquent la possibilité de PERDRE 10 points.<br /><br />Des flèches [FC3] vous indiquent la possibilité de GAGNER 10 points.<br /><br />Vous gagnerez ou eviterez de perdre des points UNIQUEMENT SI vous fournissez une réponse correcte et rapide : le temps limite dont vous disposez change en fonction de vos performances, sur toute la durée de la tâche.<br /><br /><br />Appuyez sur ESPACE pour commencer.<br />" x=0 y=0 z_index=0
+
+define advanced_delay Jitter
+	set jitter_mode Uniform
+	set jitter 50
+	set duration 495
+	set description "Waits for a specified duration"
+
+define logger Log
+	set description "Logs experimental data"
+	set auto_log yes
+
+define inline_script OfflineCanvas
+	set description "Executes Python code"
+	___run__
+	################################
+	###### Fixation ################
+	################################
+	
+	fixation= Canvas(penwidth= 3)
+	
+	fixation.fixdot(style= "large-cross")
+	
+	################################
+	###### Targets #################
+	################################
+	
+	##Flankers Left
+	FlankersLeft= Canvas(penwidth= 3)
+	
+	##left
+	FlankersLeft["E1"]= Text("←", x= -2*(arrow_length/2) - 1*arrow_gap, y= -5, font_size= arrow_length)
+	FlankersLeft["E2"]= Text("←", x= -4*(arrow_length/2) - 2*arrow_gap, y= -5, font_size= arrow_length)
+	##right
+	FlankersLeft["E3"]= Text("←", x= 2*(arrow_length/2) + 1*arrow_gap, y= -5, font_size= arrow_length)
+	FlankersLeft["E4"]= Text("←", x= 4*(arrow_length/2) + 2*arrow_gap, y= -5, font_size= arrow_length)
+	
+	##Flankers Right
+	FlankersRight= Canvas(penwidth= 3)
+	
+	##left
+	FlankersRight["E1"]= Text("→", x= -2*(arrow_length/2) - 1*arrow_gap, y= -5, font_size= arrow_length)
+	FlankersRight["E2"]= Text("→", x= -4*(arrow_length/2) - 2*arrow_gap, y= -5, font_size= arrow_length)
+	##right
+	FlankersRight["E3"]= Text("→", x= 2*(arrow_length/2) + 1*arrow_gap, y= -5, font_size= arrow_length)
+	FlankersRight["E4"]= Text("→", x= 4*(arrow_length/2) + 2*arrow_gap, y= -5, font_size= arrow_length)
+	
+	
+	
+	################################
+	###### Target   ################
+	################################
+	
+	Target= Canvas(penwidth= 3)
+	
+	
+	
+	################################
+	###### Feedback ################
+	################################
+	
+	feedback= Canvas(penwidth= 3)
+	__end__
+	set _prepare ""
+
+define feedback Pause
+	set reset_variables yes
+	set duration keypress
+	set description "Provides feedback to the participant"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="PAUSE<br /><br /><br /><br /><br /><br /><br /><br />Appuyez sur ESPACE pour continuer" x=0 y=0 z_index=0
+
+define inline_script Prompt_info
+	set description "Executes Python code"
+	___run__
+	
+	###############################################################################
+	###############################################################################
+	#####################This part is meant to be user-defined#####################
+	###information included here is meant to change for each subject and session###
+	###############################################################################
+	###############################################################################
+	
+	
+	#Store, for safety reasons, a second variable including the subject's number
+	Subject= 1
+	
+	#Store condition, for simplicity, to double check
+	GVS= "A"
+	
+	#Store session number
+	SessionNb=1
+	
+	
+	
+	
+	#then save for logging
+	exp.set("Subject", Subject)
+	exp.set("GVS", GVS)
+	exp.set("SessionNb", SessionNb)
+	__end__
+	set _prepare ""
+
+define inline_script Reset
+	set description "Executes Python code"
+	___run__
+	
+	total_gain= 0
+	__end__
+	set _prepare ""
+
+define keyboard_response Response
+	set timeout infinite
+	set flush yes
+	set event_type keypress
+	set duration keypress
+	set description "Collects keyboard responses"
+	set allowed_responses "left;right"
+
+define inline_script Target
+	set description "Executes Python code"
+	___run__
+	Target.show()
+	__end__
+	set _prepare ""
+
+define sequence experiment
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run Prompt_info always
+	run Init always
+	run OfflineCanvas always
+	run Instructions always
+	run Reset always
+	run ExpLoop always
+	run End always
+

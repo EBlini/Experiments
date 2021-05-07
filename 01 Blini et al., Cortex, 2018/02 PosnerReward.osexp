@@ -1,0 +1,841 @@
+---
+API: 2
+OpenSesame: 3.0.7
+Platform: nt
+---
+set width 1024
+set uniform_coordinates yes
+set title "New experiment"
+set subject_parity even
+set subject_nr 0
+set start experiment
+set sampler_backend legacy
+set psychopy_waitblanking yes
+set mouse_backend psycho
+set keyboard_backend psycho
+set height 768
+set foreground white
+set font_size 18
+set font_italic no
+set font_family mono
+set font_bold no
+set experiment_path "C:\\Users\\Alex_NI\\Desktop\\Exp Elvio\\TASKS\\02 ART"
+set description "Default description"
+set coordinates uniform
+set compensation 0
+set color_backend psycho
+set clock_backend psycho
+set canvas_backend psycho
+set bidi no
+set background black
+
+define inline_script Blank
+	set description "Executes Python code"
+	set _run "canvasFix.show()"
+	set _prepare ""
+
+define inline_script CUE
+	set description "Executes Python code"
+	___run__
+	
+	if self.get('Validity')== "Valid" :
+		if self.get('Side')== "Left" and self.get('Color')=="Red":
+			canvasCueLeftRed.show()
+		elif self.get('Side')== "Left" and self.get('Color')=="Blue":
+			canvasCueLeftBlue.show()
+		elif self.get('Side')== "Left" and self.get('Color')=="Green":
+			canvasCueLeftGreen.show()
+		elif self.get('Side')== "Right" and self.get('Color')=="Red":
+			canvasCueRightRed.show()
+		elif self.get('Side')== "Right" and self.get('Color')=="Blue":
+			canvasCueRightBlue.show()
+		elif self.get('Side')== "Right" and self.get('Color')=="Green":
+			canvasCueRightGreen.show()
+	
+	if self.get('Validity')== "Invalid" :
+		if self.get('Side')== "Left" and self.get('Color')=="Red":
+			canvasCueRightRed.show()
+		elif self.get('Side')== "Left" and self.get('Color')=="Blue":
+			canvasCueRightBlue.show()
+		elif self.get('Side')== "Left" and self.get('Color')=="Green":
+			canvasCueRightGreen.show()
+		elif self.get('Side')== "Right" and self.get('Color')=="Red":
+			canvasCueLeftRed.show()
+		elif self.get('Side')== "Right" and self.get('Color')=="Blue":
+			canvasCueLeftBlue.show()
+		elif self.get('Side')== "Right" and self.get('Color')=="Green":
+			canvasCueLeftGreen.show()
+	
+	
+	
+	self.sleep(85)
+	__end__
+	set _prepare ""
+
+define inline_script Cassa
+	set description "Executes Python code"
+	___run__
+	#Cassa stores all gained points
+	if self.get('correct')== 1 and self.get('response_time')<500 and self.get('response_time')>100:
+		Cassa= Cassa+self.get('Reward')
+	
+	
+	#Gain transform points into money (over 25 euros)
+	import numpy
+	Gain= numpy.around((Cassa*25.0)/1728.0, 2)
+	
+	Trial=Trial+1
+	
+	exp.set('Trial', Trial)
+	exp.set('Cassa', Cassa)
+	exp.set('Gain', Gain)
+	__end__
+	set _prepare ""
+
+define loop ExpBlocks
+	set skip 0
+	set repeat 1
+	set order sequential
+	set offset no
+	set item ExpList
+	set description "Repeatedly runs another item"
+	set cycles 9
+	set column_order ""
+	set break_if never
+	run ExpList
+
+define loop ExpList
+	set skip 0
+	set repeat 2
+	set order random
+	set offset no
+	set item TrialSeq
+	set description "Repeatedly runs another item"
+	set cycles 24
+	set column_order "Shape;Side;Validity;SOA;Color;Correct;Reward"
+	set break_if never
+	setcycle 0 SOA "700"
+	setcycle 0 Color ""
+	setcycle 0 Validity "Invalid"
+	setcycle 0 Side "Left"
+	setcycle 0 Shape "Square"
+	setcycle 0 Reward "2"
+	setcycle 0 Correct ""
+	setcycle 1 SOA "700"
+	setcycle 1 Color ""
+	setcycle 1 Validity "Valid"
+	setcycle 1 Side "Left"
+	setcycle 1 Shape "Square"
+	setcycle 1 Reward "2"
+	setcycle 1 Correct ""
+	setcycle 2 SOA "700"
+	setcycle 2 Color ""
+	setcycle 2 Validity "Invalid"
+	setcycle 2 Side "Right"
+	setcycle 2 Shape "Square"
+	setcycle 2 Reward "2"
+	setcycle 2 Correct ""
+	setcycle 3 SOA "700"
+	setcycle 3 Color ""
+	setcycle 3 Validity "Valid"
+	setcycle 3 Side "Right"
+	setcycle 3 Shape "Square"
+	setcycle 3 Reward "2"
+	setcycle 3 Correct ""
+	setcycle 4 SOA "700"
+	setcycle 4 Color ""
+	setcycle 4 Validity "Invalid"
+	setcycle 4 Side "Left"
+	setcycle 4 Shape "Circle"
+	setcycle 4 Reward "2"
+	setcycle 4 Correct ""
+	setcycle 5 SOA "700"
+	setcycle 5 Color ""
+	setcycle 5 Validity "Valid"
+	setcycle 5 Side "Left"
+	setcycle 5 Shape "Circle"
+	setcycle 5 Reward "2"
+	setcycle 5 Correct ""
+	setcycle 6 SOA "700"
+	setcycle 6 Color ""
+	setcycle 6 Validity "Invalid"
+	setcycle 6 Side "Right"
+	setcycle 6 Shape "Circle"
+	setcycle 6 Reward "2"
+	setcycle 6 Correct ""
+	setcycle 7 SOA "700"
+	setcycle 7 Color ""
+	setcycle 7 Validity "Valid"
+	setcycle 7 Side "Right"
+	setcycle 7 Shape "Circle"
+	setcycle 7 Reward "2"
+	setcycle 7 Correct ""
+	setcycle 8 SOA "700"
+	setcycle 8 Color ""
+	setcycle 8 Validity "Invalid"
+	setcycle 8 Side "Left"
+	setcycle 8 Shape "Square"
+	setcycle 8 Reward "0"
+	setcycle 8 Correct ""
+	setcycle 9 SOA "700"
+	setcycle 9 Color ""
+	setcycle 9 Validity "Valid"
+	setcycle 9 Side "Left"
+	setcycle 9 Shape "Square"
+	setcycle 9 Reward "0"
+	setcycle 9 Correct ""
+	setcycle 10 SOA "700"
+	setcycle 10 Color ""
+	setcycle 10 Validity "Invalid"
+	setcycle 10 Side "Right"
+	setcycle 10 Shape "Square"
+	setcycle 10 Reward "0"
+	setcycle 10 Correct ""
+	setcycle 11 SOA "700"
+	setcycle 11 Color ""
+	setcycle 11 Validity "Valid"
+	setcycle 11 Side "Right"
+	setcycle 11 Shape "Square"
+	setcycle 11 Reward "0"
+	setcycle 11 Correct ""
+	setcycle 12 SOA "700"
+	setcycle 12 Color ""
+	setcycle 12 Validity "Invalid"
+	setcycle 12 Side "Left"
+	setcycle 12 Shape "Circle"
+	setcycle 12 Reward "0"
+	setcycle 12 Correct ""
+	setcycle 13 SOA "700"
+	setcycle 13 Color ""
+	setcycle 13 Validity "Valid"
+	setcycle 13 Side "Left"
+	setcycle 13 Shape "Circle"
+	setcycle 13 Reward "0"
+	setcycle 13 Correct ""
+	setcycle 14 SOA "700"
+	setcycle 14 Color ""
+	setcycle 14 Validity "Invalid"
+	setcycle 14 Side "Right"
+	setcycle 14 Shape "Circle"
+	setcycle 14 Reward "0"
+	setcycle 14 Correct ""
+	setcycle 15 SOA "700"
+	setcycle 15 Color ""
+	setcycle 15 Validity "Valid"
+	setcycle 15 Side "Right"
+	setcycle 15 Shape "Circle"
+	setcycle 15 Reward "0"
+	setcycle 15 Correct ""
+	setcycle 16 SOA "700"
+	setcycle 16 Color ""
+	setcycle 16 Validity "Invalid"
+	setcycle 16 Side "Left"
+	setcycle 16 Shape "Square"
+	setcycle 16 Reward "10"
+	setcycle 16 Correct ""
+	setcycle 17 SOA "700"
+	setcycle 17 Color ""
+	setcycle 17 Validity "Valid"
+	setcycle 17 Side "Left"
+	setcycle 17 Shape "Square"
+	setcycle 17 Reward "10"
+	setcycle 17 Correct ""
+	setcycle 18 SOA "700"
+	setcycle 18 Color ""
+	setcycle 18 Validity "Invalid"
+	setcycle 18 Side "Right"
+	setcycle 18 Shape "Square"
+	setcycle 18 Reward "10"
+	setcycle 18 Correct ""
+	setcycle 19 SOA "700"
+	setcycle 19 Color ""
+	setcycle 19 Validity "Valid"
+	setcycle 19 Side "Right"
+	setcycle 19 Shape "Square"
+	setcycle 19 Reward "10"
+	setcycle 19 Correct ""
+	setcycle 20 SOA "700"
+	setcycle 20 Color ""
+	setcycle 20 Validity "Invalid"
+	setcycle 20 Side "Left"
+	setcycle 20 Shape "Circle"
+	setcycle 20 Reward "10"
+	setcycle 20 Correct ""
+	setcycle 21 SOA "700"
+	setcycle 21 Color ""
+	setcycle 21 Validity "Valid"
+	setcycle 21 Side "Left"
+	setcycle 21 Shape "Circle"
+	setcycle 21 Reward "10"
+	setcycle 21 Correct ""
+	setcycle 22 SOA "700"
+	setcycle 22 Color ""
+	setcycle 22 Validity "Invalid"
+	setcycle 22 Side "Right"
+	setcycle 22 Shape "Circle"
+	setcycle 22 Reward "10"
+	setcycle 22 Correct ""
+	setcycle 23 SOA "700"
+	setcycle 23 Color ""
+	setcycle 23 Validity "Valid"
+	setcycle 23 Side "Right"
+	setcycle 23 Shape "Circle"
+	setcycle 23 Reward "10"
+	setcycle 23 Correct ""
+	run TrialSeq
+
+define inline_script Feedback
+	set description "Executes Python code"
+	___run__
+	if self.get('correct')== 0 and self.get('response_time')<500 and self.get('response_time')>100:
+		canvasFBIncorrect.show()
+	elif self.get('response_time')>500:
+		canvasFBLent.show()
+	elif self.get('response_time')<100:
+		canvasFBRapid.show()
+	else:
+		canvasFB.copy(canvasFBCorrect)
+		canvasFB.text(str('+ ') + str(self.get('Reward')) + ' p', x=0, y=0, font_size=30, font_bold= True)
+		canvasFB.text(str(self.get('Gain')) + ' euro', x=0, y=40, font_size=30, font_bold= True)
+		canvasFB.show()
+		
+	self.sleep(985)
+	__end__
+	set _prepare ""
+
+define feedback Fin
+	set reset_variables yes
+	set duration keypress
+	set description "Provides feedback to the participant"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="Fin!" x=0 y=-64 z_index=0
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="[Gain] euro!" x=0 y=64 z_index=0
+
+define inline_script Fixation
+	set description "Executes Python code"
+	set _run "canvasFix.show()"
+	set _prepare ""
+
+define inline_script INIT
+	set description "Executes Python code"
+	___run__
+	Cassa=0
+	Trial=0
+	Gain= 0.0
+	
+	#randomize color-reward contingencies
+	import random
+	
+	#set the seed so the same subject will have the same (random) assigment of contingencies
+	Seed= self.get('subject_nr') * 100
+	random.seed(Seed)
+	#randomize
+	RandColor= ['Red', 'Blue', 'Green']
+	random.shuffle(RandColor) 
+	Col1= RandColor[0]
+	Col2= RandColor[1]
+	Col3= RandColor[2]
+	
+	
+	#Correct response based on odd or even classification of the subject
+	#this variable is for the feedback instructions, another one is updated at each trial
+	if self.get('subject_nr') % 2 == 0:
+		exp.set('CorrectSquare', 'BAS')
+		exp.set('CorrectCircle', 'ASCENDANTE')
+	else:
+		exp.set('CorrectSquare', 'ASCENDANTE')
+		exp.set('CorrectCircle', 'BAS')
+			
+	#set
+	exp.set('Col1', Col1)
+	exp.set('Col2', Col2)
+	exp.set('Col3', Col3)
+	exp.set('Cassa', Cassa)
+	exp.set('Gain', Gain)
+	exp.set('Trial', Trial)
+	__end__
+	set _prepare ""
+
+define advanced_delay ITI_Jitter
+	set jitter_mode Uniform
+	set jitter 145
+	set duration 735
+	set description "Waits for a specified duration"
+
+define feedback Instr_AfterPractice
+	set reset_variables yes
+	set duration keypress
+	set description "Provides feedback to the participant"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="2. Début de l’expérience : <br />Des que vous êtes prêt à commencer, appuyez sur la barre espace et n’oubliez pas :<br />- Appuyez sur la flèche [CorrectSquare] si un carré est présenté à l’écran ou, <br />- Appuyez sur la flèche [CorrectCircle] si une circle est présenté à l’écran.<br /><br /><br />Avec cette expérience, vous pourriez gagner jusqu'à 25 euros supplémentaires.<br /><br />A chaque bonne réponse donnée dans le temps fixé vous gagnerez des points<br /> ([Col1]: 0 points; [Col2]: 2 points; [Col3]: 10 points).<br /><br /><br />L'expérience consiste en trois parties. Chaque partie dure environ 10 minutes. <br />A la fin de chaque partie, vous pouvez faire une pause. <br />Pour reprendre, il vous suffit d’appuyer sur la barre espace." x=0 y=0 z_index=0
+
+define logger Logger
+	set description "Logs experimental data"
+	set auto_log yes
+
+define inline_script OfflineCanvas
+	set description "Executes Python code"
+	___run__
+	################
+	####fixation####
+	################
+	canvasFix = canvas(color=u'white', penwidth=2)
+	canvasFix.line(0, -32, 0, 32)
+	canvasFix.line(-32, 0, 32, 0)
+	canvasFix.rect(-370, -64, 128, 128)
+	canvasFix.rect(242, -64, 128, 128)
+	
+	################
+	######CUES######
+	################
+	
+	########
+	##left##
+	########
+	
+	#RED
+	canvasCueLeftRed = canvas(color=u'white', penwidth=2)
+	canvasCueLeftRed.line(0, -32, 0, 32)
+	canvasCueLeftRed.line(-32, 0, 32, 0)
+	canvasCueLeftRed.rect(242, -64, 128, 128)
+	canvasCueLeftRed.rect(-370, -64, 128, 128, color= 'red', penwidth=16)
+	
+	#BLUE
+	canvasCueLeftBlue = canvas(color=u'white', penwidth=2)
+	canvasCueLeftBlue.line(0, -32, 0, 32)
+	canvasCueLeftBlue.line(-32, 0, 32, 0)
+	canvasCueLeftBlue.rect(242, -64, 128, 128)
+	canvasCueLeftBlue.rect(-370, -64, 128, 128, color= 'blue', penwidth=16)
+	
+	#GREEN
+	canvasCueLeftGreen = canvas(color=u'white', penwidth=2)
+	canvasCueLeftGreen.line(0, -32, 0, 32)
+	canvasCueLeftGreen.line(-32, 0, 32, 0)
+	canvasCueLeftGreen.rect(242, -64, 128, 128)
+	canvasCueLeftGreen.rect(-370, -64, 128, 128, color= 'green', penwidth=16)
+	
+	#########
+	##right##
+	#########
+	
+	#RED
+	canvasCueRightRed = canvas(color=u'white', penwidth=2)
+	canvasCueRightRed.line(0, -32, 0, 32)
+	canvasCueRightRed.line(-32, 0, 32, 0)
+	canvasCueRightRed.rect(-370, -64, 128, 128)
+	canvasCueRightRed.rect(242, -64, 128, 128, color= 'red', penwidth=16)
+	
+	#BLUE
+	canvasCueRightBlue = canvas(color=u'white', penwidth=2)
+	canvasCueRightBlue.line(0, -32, 0, 32)
+	canvasCueRightBlue.line(-32, 0, 32, 0)
+	canvasCueRightBlue.rect(-370, -64, 128, 128)
+	canvasCueRightBlue.rect(242, -64, 128, 128, color= 'blue', penwidth=16)
+	
+	#GREEN
+	canvasCueRightGreen = canvas(color=u'white', penwidth=2)
+	canvasCueRightGreen.line(0, -32, 0, 32)
+	canvasCueRightGreen.line(-32, 0, 32, 0)
+	canvasCueRightGreen.rect(-370, -64, 128, 128)
+	canvasCueRightGreen.rect(242, -64, 128, 128, color= 'green', penwidth=16)
+	
+	
+	
+	##################
+	######TARGET######
+	##################
+	
+	########
+	##left##
+	########
+	
+	#SQUARE
+	canvasTargetLeftSquare = canvas(color=u'white', penwidth=2)
+	canvasTargetLeftSquare.line(0, -32, 0, 32)
+	canvasTargetLeftSquare.line(-32, 0, 32, 0)
+	canvasTargetLeftSquare.rect(-370, -64, 128, 128)
+	canvasTargetLeftSquare.rect(242, -64, 128, 128)
+	canvasTargetLeftSquare.rect(-338, -32, 64, 64, fill= True)
+	
+	#CIRCLE
+	canvasTargetLeftCircle = canvas(color=u'white', penwidth=2)
+	canvasTargetLeftCircle.line(0, -32, 0, 32)
+	canvasTargetLeftCircle.line(-32, 0, 32, 0)
+	canvasTargetLeftCircle.rect(-370, -64, 128, 128)
+	canvasTargetLeftCircle.rect(242, -64, 128, 128)
+	canvasTargetLeftCircle.circle(-308, 0, 32, fill= True)
+	
+	
+	#########
+	##right##
+	#########
+	
+	#SQUARE
+	canvasTargetRightSquare = canvas(color=u'white', penwidth=2)
+	canvasTargetRightSquare.line(0, -32, 0, 32)
+	canvasTargetRightSquare.line(-32, 0, 32, 0)
+	canvasTargetRightSquare.rect(-370, -64, 128, 128)
+	canvasTargetRightSquare.rect(242, -64, 128, 128)
+	canvasTargetRightSquare.rect(274, -32, 64, 64, fill= True)
+	
+	#CIRCLE
+	canvasTargetRightCircle = canvas(color=u'white', penwidth=2)
+	canvasTargetRightCircle.line(0, -32, 0, 32)
+	canvasTargetRightCircle.line(-32, 0, 32, 0)
+	canvasTargetRightCircle.rect(-370, -64, 128, 128)
+	canvasTargetRightCircle.rect(242, -64, 128, 128)
+	canvasTargetRightCircle.circle(308, 0, 32, fill= True)
+	
+	
+	##################
+	######FEED B######
+	##################
+	canvasFB = canvas(color=u'white', penwidth=2)
+	
+	canvasFBCorrect = canvas(color=u'white', penwidth=2)
+	canvasFBCorrect.text("Correct!", x=0, y=-40, font_size=30, font_bold= True)
+	
+	canvasFBIncorrect = canvas(color=u'white', penwidth=2)
+	canvasFBIncorrect.text("Incorrect!", x=0, y=-40, font_size=30, font_bold= True)
+	
+	canvasFBLent = canvas(color=u'white', penwidth=2)
+	canvasFBLent.text("Trop Lent!", x=0, y=-40, font_size=30, font_bold= True)
+	
+	canvasFBRapid = canvas(color=u'white', penwidth=2)
+	canvasFBRapid.text("Trop Rapide!", x=0, y=-40, font_size=30, font_bold= True)
+	__end__
+	set _prepare ""
+
+define feedback Pause
+	set reset_variables yes
+	set duration keypress
+	set description "Provides feedback to the participant"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="PAUSE<br /><br /><br />Des que vous êtes prêt à commencer, appuyez sur la barre espace et n’oubliez pas :<br />- Appuyez sur la flèche [CorrectSquare] si un carré est présenté à l’écran ou, <br />- Appuyez sur la flèche [CorrectCircle] si une circle est présenté à l’écran.<br /><br /><br />Avec cette expérience, vous pourriez gagner jusqu'à 25 euros supplémentaires.<br /><br />A chaque bonne réponse donnée dans le temps fixé vous gagnerez des points<br /> ([Col1]: 0 points; [Col2]: 2 points; [Col3]: 10 points).<br /><br /><br />" x=0 y=0 z_index=0
+
+define loop Practice
+	set skip 0
+	set repeat 1
+	set order random
+	set offset no
+	set item TrialSeq
+	set description "Repeatedly runs another item"
+	set cycles 24
+	set column_order "Shape;Side;Validity;SOA;Color;Correct;Reward;Weight"
+	set break_if "[Trial]=18"
+	setcycle 0 SOA "700"
+	setcycle 0 Weight "0"
+	setcycle 0 Color ""
+	setcycle 0 Validity "Invalid"
+	setcycle 0 Side "Left"
+	setcycle 0 Shape "Square"
+	setcycle 0 Reward "2"
+	setcycle 0 Correct ""
+	setcycle 1 SOA "700"
+	setcycle 1 Weight "2"
+	setcycle 1 Color ""
+	setcycle 1 Validity "Valid"
+	setcycle 1 Side "Left"
+	setcycle 1 Shape "Square"
+	setcycle 1 Reward "2"
+	setcycle 1 Correct ""
+	setcycle 2 SOA "700"
+	setcycle 2 Weight "0"
+	setcycle 2 Color ""
+	setcycle 2 Validity "Invalid"
+	setcycle 2 Side "Right"
+	setcycle 2 Shape "Square"
+	setcycle 2 Reward "2"
+	setcycle 2 Correct ""
+	setcycle 3 SOA "700"
+	setcycle 3 Weight "2"
+	setcycle 3 Color ""
+	setcycle 3 Validity "Valid"
+	setcycle 3 Side "Right"
+	setcycle 3 Shape "Square"
+	setcycle 3 Reward "2"
+	setcycle 3 Correct ""
+	setcycle 4 SOA "700"
+	setcycle 4 Weight "0"
+	setcycle 4 Color ""
+	setcycle 4 Validity "Invalid"
+	setcycle 4 Side "Left"
+	setcycle 4 Shape "Circle"
+	setcycle 4 Reward "2"
+	setcycle 4 Correct ""
+	setcycle 5 SOA "700"
+	setcycle 5 Weight "2"
+	setcycle 5 Color ""
+	setcycle 5 Validity "Valid"
+	setcycle 5 Side "Left"
+	setcycle 5 Shape "Circle"
+	setcycle 5 Reward "2"
+	setcycle 5 Correct ""
+	setcycle 6 SOA "700"
+	setcycle 6 Weight "0"
+	setcycle 6 Color ""
+	setcycle 6 Validity "Invalid"
+	setcycle 6 Side "Right"
+	setcycle 6 Shape "Circle"
+	setcycle 6 Reward "2"
+	setcycle 6 Correct ""
+	setcycle 7 SOA "700"
+	setcycle 7 Weight "2"
+	setcycle 7 Color ""
+	setcycle 7 Validity "Valid"
+	setcycle 7 Side "Right"
+	setcycle 7 Shape "Circle"
+	setcycle 7 Reward "2"
+	setcycle 7 Correct ""
+	setcycle 8 SOA "700"
+	setcycle 8 Weight "0"
+	setcycle 8 Color ""
+	setcycle 8 Validity "Invalid"
+	setcycle 8 Side "Left"
+	setcycle 8 Shape "Square"
+	setcycle 8 Reward "0"
+	setcycle 8 Correct ""
+	setcycle 9 SOA "700"
+	setcycle 9 Weight "2"
+	setcycle 9 Color ""
+	setcycle 9 Validity "Valid"
+	setcycle 9 Side "Left"
+	setcycle 9 Shape "Square"
+	setcycle 9 Reward "0"
+	setcycle 9 Correct ""
+	setcycle 10 SOA "700"
+	setcycle 10 Weight "0"
+	setcycle 10 Color ""
+	setcycle 10 Validity "Invalid"
+	setcycle 10 Side "Right"
+	setcycle 10 Shape "Square"
+	setcycle 10 Reward "0"
+	setcycle 10 Correct ""
+	setcycle 11 SOA "700"
+	setcycle 11 Weight "2"
+	setcycle 11 Color ""
+	setcycle 11 Validity "Valid"
+	setcycle 11 Side "Right"
+	setcycle 11 Shape "Square"
+	setcycle 11 Reward "0"
+	setcycle 11 Correct ""
+	setcycle 12 SOA "700"
+	setcycle 12 Weight "0"
+	setcycle 12 Color ""
+	setcycle 12 Validity "Invalid"
+	setcycle 12 Side "Left"
+	setcycle 12 Shape "Circle"
+	setcycle 12 Reward "0"
+	setcycle 12 Correct ""
+	setcycle 13 SOA "700"
+	setcycle 13 Weight "2"
+	setcycle 13 Color ""
+	setcycle 13 Validity "Valid"
+	setcycle 13 Side "Left"
+	setcycle 13 Shape "Circle"
+	setcycle 13 Reward "0"
+	setcycle 13 Correct ""
+	setcycle 14 SOA "700"
+	setcycle 14 Weight "0"
+	setcycle 14 Color ""
+	setcycle 14 Validity "Invalid"
+	setcycle 14 Side "Right"
+	setcycle 14 Shape "Circle"
+	setcycle 14 Reward "0"
+	setcycle 14 Correct ""
+	setcycle 15 SOA "700"
+	setcycle 15 Weight "2"
+	setcycle 15 Color ""
+	setcycle 15 Validity "Valid"
+	setcycle 15 Side "Right"
+	setcycle 15 Shape "Circle"
+	setcycle 15 Reward "0"
+	setcycle 15 Correct ""
+	setcycle 16 SOA "700"
+	setcycle 16 Weight "0"
+	setcycle 16 Color ""
+	setcycle 16 Validity "Invalid"
+	setcycle 16 Side "Left"
+	setcycle 16 Shape "Square"
+	setcycle 16 Reward "10"
+	setcycle 16 Correct ""
+	setcycle 17 SOA "700"
+	setcycle 17 Weight "2"
+	setcycle 17 Color ""
+	setcycle 17 Validity "Valid"
+	setcycle 17 Side "Left"
+	setcycle 17 Shape "Square"
+	setcycle 17 Reward "10"
+	setcycle 17 Correct ""
+	setcycle 18 SOA "700"
+	setcycle 18 Weight "0"
+	setcycle 18 Color ""
+	setcycle 18 Validity "Invalid"
+	setcycle 18 Side "Right"
+	setcycle 18 Shape "Square"
+	setcycle 18 Reward "10"
+	setcycle 18 Correct ""
+	setcycle 19 SOA "700"
+	setcycle 19 Weight "2"
+	setcycle 19 Color ""
+	setcycle 19 Validity "Valid"
+	setcycle 19 Side "Right"
+	setcycle 19 Shape "Square"
+	setcycle 19 Reward "10"
+	setcycle 19 Correct ""
+	setcycle 20 SOA "700"
+	setcycle 20 Weight "0"
+	setcycle 20 Color ""
+	setcycle 20 Validity "Invalid"
+	setcycle 20 Side "Left"
+	setcycle 20 Shape "Circle"
+	setcycle 20 Reward "10"
+	setcycle 20 Correct ""
+	setcycle 21 SOA "700"
+	setcycle 21 Weight "2"
+	setcycle 21 Color ""
+	setcycle 21 Validity "Valid"
+	setcycle 21 Side "Left"
+	setcycle 21 Shape "Circle"
+	setcycle 21 Reward "10"
+	setcycle 21 Correct ""
+	setcycle 22 SOA "700"
+	setcycle 22 Weight "0"
+	setcycle 22 Color ""
+	setcycle 22 Validity "Invalid"
+	setcycle 22 Side "Right"
+	setcycle 22 Shape "Circle"
+	setcycle 22 Reward "10"
+	setcycle 22 Correct ""
+	setcycle 23 SOA "700"
+	setcycle 23 Weight "2"
+	setcycle 23 Color ""
+	setcycle 23 Validity "Valid"
+	setcycle 23 Side "Right"
+	setcycle 23 Shape "Circle"
+	setcycle 23 Reward "10"
+	setcycle 23 Correct ""
+	run TrialSeq
+
+define inline_script Prompt_info
+	set description "Executes Python code"
+	___run__
+	
+	###############################################################################
+	###############################################################################
+	#####################This part is meant to be user-defined#####################
+	###information included here is meant to change for each subject and session###
+	###############################################################################
+	###############################################################################
+	
+	
+	#Store, for safety reasons, a second variable including the subject's number
+	Subject= 8
+	
+	#Store condition, for simplicity, to double check
+	GVS= "A"
+	
+	
+	#then save for logging
+	exp.set("Subject", Subject)
+	exp.set("GVS", GVS)
+	__end__
+	set _prepare ""
+
+define inline_script ResetCassa
+	set description "Executes Python code"
+	___run__
+	Cassa=0
+	Gain=0.0
+	Trial=0
+	
+	exp.set('Cassa', Cassa)
+	exp.set('Gain', Gain)
+	exp.set('Trial', Trial)
+	__end__
+	set _prepare ""
+
+define keyboard_response Response
+	set timeout 750
+	set flush yes
+	set duration keypress
+	set description "Collects keyboard responses"
+	set correct_response "[Correct]"
+	set allowed_responses "down;up"
+
+define advanced_delay SOA
+	set jitter_mode Uniform
+	set jitter 135
+	set duration 585
+	set description "Waits for a specified duration"
+
+define inline_script Target
+	set description "Executes Python code"
+	___run__
+	if self.get('Side')== "Left" and self.get('Shape')=="Square":
+		canvasTargetLeftSquare.show()
+	elif self.get('Side')== "Left" and self.get('Shape')=="Circle":
+		canvasTargetLeftCircle.show()
+	elif self.get('Side')== "Right" and self.get('Shape')=="Square":
+		canvasTargetRightSquare.show()
+	elif self.get('Side')== "Right" and self.get('Shape')=="Circle":
+		canvasTargetRightCircle.show()
+	__end__
+	set _prepare ""
+
+define sequence TrialSeq
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run TrialSet always
+	run Fixation always
+	run ITI_Jitter always
+	run CUE always
+	run Blank always
+	run SOA "[SOA]=700"
+	run Target always
+	run Response always
+	run Cassa always
+	run Feedback always
+	run Logger always
+	run Pause "[Trial]=144 or [Trial]=288 "
+
+define inline_script TrialSet
+	set description "Executes Python code"
+	___run__
+	#choose relevant color, corresponding to reward at stake
+	if self.get('Reward')== 0:
+		exp.set('Color', self.get('Col1'))
+	elif self.get('Reward')== 2:
+		exp.set('Color', self.get('Col2'))
+	elif self.get('Reward')== 10:
+		exp.set('Color', self.get('Col3'))
+	
+	
+	#Correct response based on odd or even classification of the subject
+	if self.get('subject_nr') % 2 == 0:
+		if self.get('Shape')== "Square":
+			exp.set('Correct', 'down')
+		elif self.get('Shape')== "Circle":
+			exp.set('Correct', 'up')
+	else:
+		if self.get('Shape')== "Square":
+			exp.set('Correct', 'up')
+		elif self.get('Shape')== "Circle":
+			exp.set('Correct', 'down')
+	__end__
+	set _prepare ""
+
+define sequence experiment
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run Prompt_info always
+	run INIT always
+	run OfflineCanvas always
+	run ResetCassa always
+	run Instr_AfterPractice always
+	run ExpBlocks always
+	run Fin always
+
+define feedback instructions
+	set reset_variables yes
+	set duration keypress
+	set description "Provides feedback to the participant"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="Dans cette expérience, nous vous demandons d’:<br />- Appuyez sur la flèche [CorrectSquare] si un carré est présenté à l’écran ou, <br />- Appuyez sur la flèche [CorrectCircle] si une circle est présenté à l’écran.<br /><br />Séquence d’un essai :<br />Une croix noire apparait sur l’écran. Vous devez le bien fixé.<br />Un indice non prédictif sera présenté sur un des deux cotes de l'écran.<br />Ensuite un carré ou un circule sera présenté <br />et vous devez répondre le plus rapidement et précisément possible <br />en utilisant l'index et le majeur de votre main dominante.<br />Les réponses trop rapides ou trop lentes ne seront pas prises en compte.<br />A chaque bonne réponse donnée dans le temps fixé vous gagnerez des points<br /> ([Col1]: 0 points; [Col2]: 2 points; [Col3]: 10 points).<br /><br /><br />Déroulement de la séance. <br />1. Entrainement <br />Vous allez commencer par une brève séance d'entrainement. Si vous avez des questions, c’est le moment de les poser.<br />" x=0 y=0 z_index=0
+

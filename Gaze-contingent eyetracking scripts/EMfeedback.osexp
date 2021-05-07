@@ -1,0 +1,798 @@
+---
+API: 2.1
+OpenSesame: 3.3.9
+Platform: nt
+---
+set width 1920
+set uniform_coordinates yes
+set title "New experiment"
+set subject_parity even
+set subject_nr 0
+set start experiment
+set sound_sample_size -16
+set sound_freq 48000
+set sound_channels 2
+set sound_buf_size 1024
+set sampler_backend legacy
+set round_decimals 2
+set psychopy_screen 1
+set mouse_backend psycho
+set keyboard_backend psycho
+set height 1080
+set fullscreen no
+set form_clicks no
+set foreground white
+set font_underline no
+set font_size 18
+set font_italic no
+set font_family mono
+set font_bold no
+set experiment_path "C:\\Users\\Semenzato\\Desktop\\CINETTO feedback\\00 templates_script base"
+set disable_garbage_collection yes
+set description "The main experiment item"
+set coordinates uniform
+set compensation 0
+set color_backend psycho
+set clock_backend psycho
+set canvas_backend psycho
+set block_size 256
+set background black
+
+define inline_script Blank
+	set description "Executes Python code"
+	___run__
+	
+	#clear everything and wait
+	canvas_blank.show()
+	
+	#sleep 750 ms
+	self.sleep(750)
+	__end__
+	set _prepare ""
+
+define inline_script DistanceFun
+	set description "Executes Python code"
+	___run__
+	
+	#get cartesian distances between 2 points on screen
+	
+	def get_distance(x1, y1, xref, yref):
+	    
+	    distance= math.sqrt((x1-xref)**2 + (y1-yref)**2)
+	    
+	    return distance
+	__end__
+	set _prepare ""
+
+define loop ExpList
+	set source table
+	set repeat 4
+	set order random
+	set description "Repeatedly runs another item"
+	set cycles 16
+	set continuous no
+	set break_if_on_first yes
+	set break_if never
+	setcycle 0 Angle 30
+	setcycle 0 Radius 180
+	setcycle 1 Angle 60
+	setcycle 1 Radius 180
+	setcycle 2 Angle 120
+	setcycle 2 Radius 180
+	setcycle 3 Angle 150
+	setcycle 3 Radius 180
+	setcycle 4 Angle 210
+	setcycle 4 Radius 180
+	setcycle 5 Angle 240
+	setcycle 5 Radius 180
+	setcycle 6 Angle 300
+	setcycle 6 Radius 180
+	setcycle 7 Angle 330
+	setcycle 7 Radius 180
+	setcycle 8 Angle 30
+	setcycle 8 Radius 360
+	setcycle 9 Angle 60
+	setcycle 9 Radius 360
+	setcycle 10 Angle 120
+	setcycle 10 Radius 360
+	setcycle 11 Angle 150
+	setcycle 11 Radius 360
+	setcycle 12 Angle 210
+	setcycle 12 Radius 360
+	setcycle 13 Angle 240
+	setcycle 13 Radius 360
+	setcycle 14 Angle 300
+	setcycle 14 Radius 360
+	setcycle 15 Angle 330
+	setcycle 15 Radius 360
+	run TrialSequence
+
+define inline_script Exploration
+	set description "Executes Python code"
+	___run__
+	
+	#for the real experiment nothing is shown or a grid is shown:
+	if debug== False:
+	    if show_grid== True:
+	        canvas_grid.show()
+	    else:
+	        canvas_blank.show()
+	
+	#this is only relevant for debugging instead
+	#when you want to see the target and possibly the fixations
+	#otherwise it should be commented for invisible targets/fixations
+	
+	if debug== True:
+	    canvas_target.show()
+	
+	
+	#send Event message to eyetracker
+	eyetracker.log("exploration")
+	   
+	#start the first sound
+	#maximum feedback 'cause we're assuming central fixation
+	
+	sampler.play()
+	    
+	#read time    
+	t0= self.time()
+	
+	#then the main loop lasts until trial time ends
+	#optionally a further condition (fixation on target) could be added
+	while ((self.time() - t0) < Trial_duration):
+	    
+	    #start waiting for a few eye sammples
+	    d= numpy.arange(number_samples_fixation)
+	    
+	    #initialise coordinates - used for both
+	    #plotting fixations (debugging) and modulate pitch
+	    xf= numpy.arange(number_samples_fixation)
+	    yf= numpy.arange(number_samples_fixation)
+	    
+	    for i in d:
+	        
+	        #only accept non-blinks
+	        is_blink= True
+	        while is_blink:
+	            s1, s2= eyetracker.sample()
+	            if s1> -1:
+	                is_blink= False
+	            self.sleep(1)
+	        
+	        #eyetracker is centered to upper left
+	        #change coordinates to match canvas
+	        s1= s1 - adj_x
+	        s2= s2 - adj_y
+	        
+	        #this is only for debugging/plotting fixations
+	        #comment for the real experiment
+	        xf[i]= s1
+	        yf[i]= s2
+	        
+	        #set sample distance in vector
+	        d[i]= get_distance(s1, s2, target_x, target_y)
+	        self.sleep(1)
+	        
+	    #check average distance
+	    dist_from_fix= numpy.median(d)
+	    
+	    #this bit updates a counter and sets is_on_target to True when criterion is reached
+	    if exit_on_fixation== True:
+	        
+	        if fix_on_target_vector[fix_target_count]< samples_target_fix:
+	            #update or reset counter
+	            if dist_from_fix<= tolerance:
+	                fix_target_count= fix_target_count + 1
+	            else:
+	                fix_target_count= 0
+	        
+	        #check criterion
+	        if fix_on_target_vector[fix_target_count]== samples_target_fix:
+	            is_on_target== True
+	            break
+	        
+	    
+	    #this is for both debugging/plotting fixations
+	    #and to adjust pitch
+	    #comment for the real experiment
+	    xfix= int(numpy.median(xf))
+	    yfix= int(numpy.median(yf))
+	    
+	    #this is ONLY for debugging and may be commented for the experiment
+	    if debug== True:
+	        canvas_target.circle(xfix,
+	                             yfix,
+	                             10,
+	                             color= "red")
+	        canvas_target.show()
+	    
+	    
+	    #get feedback volume Value
+	    feedback= set_feedback(dist_from_fix)
+	    
+	    #if is the case also get pitch
+	    if feedback_pitch== True:
+	        pitch= set_pitch(xfix, target_x)
+	        sampler = Synth(osc=u'square',
+	                        freq= pitch,
+	                        length= 1000)
+	    else:
+	        pitch= mid_pitch
+	        sampler = Synth(osc=u'square',
+	                        freq= pitch,
+	                        length= 1000)
+	
+	    
+	    #adjust feedback and play it again
+	    #sampler.volume= feedback
+	    #sampler.pitch= pitch
+	    sampler.volume= feedback
+	    sampler.stop()
+	    sampler.play(volume= feedback)
+	    
+	   
+	#finally stop
+	sampler.stop()
+	
+	
+	#read time    
+	t1= self.time()
+	
+	trial_real_duration= t1-t0
+	exp.set("trial_real_duration", trial_real_duration)
+	
+	if is_on_target:
+	    reached_target= 1
+	else:
+	    reached_target= 0
+	
+	exp.set("reached_target", reached_target)
+	__end__
+	set _prepare ""
+
+define inline_script FeedbackFun
+	set description "Executes Python code"
+	___run__
+	
+	#given a distance from the ideal reference (e.g. a target position) adapts the 
+	# #feedback accordingly (in this case the volume, between 0 and 1)
+	# only floats should be provided and returns a float
+	
+	def set_feedback(distance, 
+	                 tolerance= tolerance, 
+	                 intolerance= intolerance,
+	                 min_volume= min_volume, 
+	                 max_volume= max_volume):
+	    
+	    if distance<= tolerance:
+	        feedback= min_volume
+	    elif distance>= intolerance:
+	        feedback= max_volume
+	    else:
+	        f1= (distance-tolerance)/(intolerance-tolerance)
+	        feedback= min_volume + f1*(max_volume-min_volume)
+	    
+	    return(numpy.round(feedback, 2))
+	       
+	# however, this function is overwritten when you want the opposite
+	#that is, you want the volume only when they are fixating the target
+	if volume_on_target== True:
+	    
+	    def set_feedback(distance, 
+	                 tolerance= tolerance, 
+	                 intolerance= intolerance,
+	                 min_volume= min_volume, 
+	                 max_volume= max_volume):
+	        
+	        if distance<= tolerance:
+	            feedback= max_volume
+	        else:
+	            feedback= min_volume
+	        
+	        return(numpy.round(feedback, 2))
+	        
+	    
+	
+	
+	#this function set the pitch according to the difference between x coordinates
+	#between target and fixations
+	#if fixations are on the right pitch is higher than mid
+	#if fixation are on the left pitch is low
+	       
+	def set_pitch(x_fix, 
+	              x_target,
+	              min_pitch= min_pitch,
+	              mid_pitch= mid_pitch,
+	              max_pitch= max_pitch,
+	              tolerance= tolerance/4,
+	              intolerance= intolerance,
+	              option= 2):
+	    
+	    if option== 1:
+	        if x_fix > x_target: 
+	        #then fixs are on the right pitch is higher
+	            dist= x_fix - x_target
+	            if dist< tolerance:
+	                pitch= mid_pitch
+	            elif dist> intolerance:
+	                pitch= max_pitch
+	            else:
+	                p1= (dist-tolerance)/(intolerance-tolerance)
+	                pitch= mid_pitch + p1*(max_pitch-mid_pitch)
+	        else:
+	            #fixs are left, pitch is low
+	            dist= x_target - x_fix
+	            if dist< tolerance:
+	                pitch= mid_pitch
+	            elif dist> intolerance:
+	                pitch= min_pitch
+	            else:
+	                p1= (dist-tolerance)/(intolerance-tolerance)
+	                pitch= mid_pitch - p1*(mid_pitch-min_pitch)
+	                
+	                
+	        return(int(pitch))
+	        
+	    else:
+	        if x_fix > x_target:
+	            note= max_pitch
+	        else:
+	            note= min_pitch
+	            
+	        return(note)
+	        
+	__end__
+	set _prepare ""
+
+define inline_script Fixation
+	set description "Executes Python code"
+	___run__
+	
+	#present fixation
+	canvas_fix.show()
+	
+	#send Event message to eyetracker
+	eyetracker.log("fixation")
+	
+	#wait for central fixation
+	dist_from_fix= 9999
+	 
+	while dist_from_fix > tolerance:
+	    
+	    d= numpy.arange(number_samples_fixation)
+	    
+	    for i in d:
+	        
+	        #only accept non-blinks
+	        is_blink= True
+	        while is_blink:
+	            s1, s2= eyetracker.sample()
+	            if s1 > -1:
+	                is_blink= False
+	            self.sleep(1)
+	        
+	        #eyetracker is centered to upper left
+	        #change coordinates to match canvas
+	        s1= s1 - adj_x
+	        s2= s2 - adj_y
+	        
+	        #set sample distance in vector
+	        d[i]= get_distance(s1, s2, 0, 0)
+	        self.sleep(1)
+	        
+	    #check criterion
+	    dist_from_fix= numpy.median(d)
+	
+	# exploration starts
+	
+	self.sleep(500)
+	__end__
+	set _prepare ""
+
+define inline_script INIT
+	set description "Executes Python code"
+	___run__
+	
+	#basic info
+	
+	#subject: useful for double checks
+	Subject= 1
+	
+	
+	#whether you want to display a grid as visual aid for exploration
+	show_grid= False
+	
+	#whether you want to modulate the pitch as well as feedback
+	feedback_pitch= False
+	
+	#debug: if True prints target and fixations on screen
+	#doing so causes a minor delay due to canvas presentation
+	debug= True
+	
+	#if True max_volume is given ONLY when patients fixate the target
+	#if False volume is silent when patients are fixating the target
+	volume_on_target= True
+	
+	#if True the trial is interrupted when patients fixate the target for
+	#for a duration given by
+	exit_on_fixation= True
+	
+	samples_target_fix= int(100 * 1000/600) #50 ms for 600 Hz sampling rate
+	
+	
+	#############################
+	###### parameters ###########
+	#############################
+	
+	
+	#max duration of a trial in ms
+	Trial_duration= 10000
+	
+	#how many (pixels) accept as distance/ considered on target (on target within X pixels)
+	tolerance= 90.0
+	
+	#how many pixels you consider outrageous to the point that you give the worst feedback
+	intolerance= 1050.0
+	
+	#across how many samples you want to assess whether it is a fixation or not?
+	#you compute statistics on this number of samples so the feedback 
+	#is more reactive with a low number, but more precise with more samples
+	#blinks are excluded
+	number_samples_fixation= 2
+	
+	
+	#feedback
+	#minimum volume (sometimes 0.1 is pretty much silent...)
+	min_volume= 0.0
+	#and sometimes full volume is startling
+	max_volume= 0.6
+	
+	#pitch range
+	#min_pitch= 16
+	#max_pitch= 7100
+	#mid_pitch= int((min_pitch + max_pitch)/2)
+	
+	min_pitch= 'c2'
+	max_pitch= 'b6'
+	mid_pitch= 'f4'
+	
+	
+	
+	
+	#to align canvas and eyetracker
+	adj_x= 1920 / 2
+	adj_y= 1080 / 2
+	
+	#trial and phase
+	Trial= 0
+	exp.set("Trial", Trial)
+	
+	phase= "practice"
+	exp.set("Phase", phase)
+	
+	
+	
+	
+	#log everything
+	exp.set("tolerance", tolerance)
+	exp.set("intolerance", intolerance)
+	exp.set("N_samples_fix", number_samples_fixation)
+	exp.set("Trial_duration", Trial_duration)
+	exp.set("show_grid", show_grid)
+	exp.set("feedback_pitch", feedback_pitch)
+	exp.set("debug", debug)
+	exp.set("volume_on_target", volume_on_target)
+	exp.set("exit_on_fixation", exit_on_fixation)
+	exp.set("samples_target_fix", samples_target_fix)
+	
+	#used later continuetrial_real_duration= t1-t0
+	exp.set("trial_real_duration", 99999)
+	exp.set("reached_target", False)
+	
+	
+	#import python packages
+	import math 
+	
+	import numpy
+	
+	
+	#prepare vector to accomodate for optional exit on target exit_on_fixation
+	fix_on_target_vector= numpy.arange(samples_target_fix + 1)
+	
+	
+	
+	##############################################
+	## TOBII eye tracker serial number ###########
+	##############################################
+	
+	from pygaze import settings 
+	    
+	settings.TRACKERSERIALNUMBER = "TPSP1-010107242734"
+	
+	# if we are not using pygaze for calibration
+	settings.EVENTDETECTION = "native"
+	
+	#I am also setting this parameter manually
+	# should be the approx precision for considering a fixation
+	#doesn't really work with tobii
+	#self.set("pxfixtresh", 5)
+	__end__
+	set _prepare ""
+
+define inline_script InlineCanvas
+	set description "Executes Python code"
+	___run__
+	
+	#get target coordinates
+	target_x, target_y= get_target_coordinates(exp.get("Angle"), exp.get("Radius"))
+	
+	exp.set("Target_X", target_x)
+	exp.set("Target_Y", target_y)
+	
+	#this is only relevant for debugging
+	#when you want to see the target and possibly the fixations
+	#otherwise it may be commented for invisible targets/fixations
+	if show_grid== True:
+	    canvas_target.copy(canvas_grid)
+	else:
+	    canvas_target.copy(canvas_blank)
+	
+	canvas_target.circle(target_x, target_y, tolerance, fill= True, color= "green")
+	
+	
+	#sound reset
+	#reset is made at each trial inline
+	if feedback_pitch== True:
+	    pitch= set_pitch(0, target_x)
+	else:
+	    pitch= mid_pitch
+	        
+	sampler = Synth(osc=u'square', 
+	                freq= mid_pitch,
+	                length= 1000)
+	
+	
+	#criterion reset
+	is_on_target= False
+	fix_target_count= 0
+	__end__
+	set _prepare ""
+
+define feedback Instructions
+	set reset_variables yes
+	set duration keypress
+	set description "Provides feedback to the participant"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="Questo esperimento inizierà con un punto al centro dello schermo: il suo compito è quello di fissarlo con lo sguardo.<br /><br />Una volta portato lo sguardo al centro dello schermo, il punto sparirà. A partire da quel momento il suo compito sarà quello di esplorare lo schermo con gli occhi alla ricerca di un punto invisibile. Un feedback sonoro la aiuterà a capire quanto vicino al punto invisibile si trova il suo sguardo; avrà trovato il punto corretto quando non sentirà alcun suono.<br /><br />Prima di iniziare l'esperimento eseguirà qualche trial di prova.<br /><br />Prema SPAZIO quando è pronta/o ad iniziare l'esperimento.<br />" x=0 y=0 z_index=0
+
+define feedback Instructions2
+	set reset_variables yes
+	set duration keypress
+	set description "Provides feedback to the participant"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="La prova è terminata!<br /><br />Se ha delle domande può porle ora.<br /><br />Altrimenti prema SPAZIO per iniziare l'esperimento." x=0 y=0 z_index=0
+
+define logger Log
+	set description "Logs experimental data"
+	set auto_log yes
+
+define inline_script OfflineClasses
+	set description "Executes Python code"
+	___run__
+	
+	###############################
+	#### canvas ###################
+	###############################
+	
+	#blank canvas
+	canvas_blank= canvas()
+	
+	# fixation to the center at each trial
+	canvas_fix= canvas()
+	canvas_fix.fixdot()
+	
+	#grid
+	#this is made so participants have somewhere to look, which
+	#makes exploration easier and enables strategies
+	
+	canvas_grid= canvas()
+	
+	#this grid does not cover the screen homogeneously
+	##angles
+	#all_angles= numpy.arange(0, 360, 20)
+	#all_radia= numpy.arange(30, 540, 30)
+	#
+	#for a in all_angles:
+	#    for r in all_radia:
+	#        grid_x, grid_y= get_target_coordinates(a, r)
+	#        canvas_grid.circle(grid_x, grid_y, 8, fill= True, color= "white")
+	
+	
+	all_x= numpy.arange(-850, 950, 100)
+	all_y= numpy.arange(-450, 550, 100)
+	
+	for ax in all_x:
+	    for ay in all_y:
+	        canvas_grid.circle(ax, ay, 8, fill= True, color= "white")
+	
+	
+	
+	
+	# target
+	#this is meant to remain invisible however it is useful for debugging
+	canvas_target= canvas()
+	if show_grid== True:
+	    canvas_target.copy(canvas_grid)
+	    
+	
+	
+	###############################
+	#### sound ###################
+	###############################
+	#reset is made at each trial inline
+	sampler = Synth(osc=u'square', 
+	                freq= mid_pitch,
+	                length= 1000)
+	__end__
+	set _prepare ""
+
+define loop Practice
+	set source_file ""
+	set source table
+	set repeat 1
+	set order random
+	set description "Repeatedly runs another item"
+	set cycles 16
+	set continuous no
+	set break_if_on_first yes
+	set break_if "[Trial]== 5"
+	setcycle 0 Angle 30
+	setcycle 0 Radius 180
+	setcycle 1 Angle 60
+	setcycle 1 Radius 180
+	setcycle 2 Angle 120
+	setcycle 2 Radius 180
+	setcycle 3 Angle 150
+	setcycle 3 Radius 180
+	setcycle 4 Angle 210
+	setcycle 4 Radius 180
+	setcycle 5 Angle 240
+	setcycle 5 Radius 180
+	setcycle 6 Angle 300
+	setcycle 6 Radius 180
+	setcycle 7 Angle 330
+	setcycle 7 Radius 180
+	setcycle 8 Angle 30
+	setcycle 8 Radius 360
+	setcycle 9 Angle 60
+	setcycle 9 Radius 360
+	setcycle 10 Angle 120
+	setcycle 10 Radius 360
+	setcycle 11 Angle 150
+	setcycle 11 Radius 360
+	setcycle 12 Angle 210
+	setcycle 12 Radius 360
+	setcycle 13 Angle 240
+	setcycle 13 Radius 360
+	setcycle 14 Angle 300
+	setcycle 14 Radius 360
+	setcycle 15 Angle 330
+	setcycle 15 Radius 360
+	run TrialSequence
+
+define inline_script TargetFun
+	set description "Executes Python code"
+	___run__
+	#this function returns x y coordinates given angle and radius
+	#assuming the circle is centered in the origin
+	#returns a x, y tuple
+	
+	
+	def get_target_coordinates(angle, radius):
+	    
+	    x= math.cos(angle/180.0*math.pi) * radius
+	    y= math.sin(angle/180.0*math.pi) * radius
+	    
+	    res= [int(x), int(y)]
+	    
+	    return res
+	__end__
+	set _prepare ""
+
+define sequence TrialSequence
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run InlineCanvas always
+	run new_pygaze_start_recording always
+	run Blank always
+	run Fixation always
+	run Exploration always
+	run new_pygaze_stop_recording always
+	run new_pygaze_log always
+	run Log always
+	run resetTrial always
+	run pause "[Trial] % 41 == 0"
+
+define feedback end
+	set reset_variables yes
+	set duration keypress
+	set description "Provides feedback to the participant"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="L'esperimento è terminato.<br /><br />Grazie per aver partecipato!" x=0 y=0 z_index=0
+
+define sequence experiment
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run INIT always
+	run TargetFun always
+	run DistanceFun always
+	run FeedbackFun always
+	run OfflineClasses always
+	run new_pygaze_init always
+	run Instructions always
+	run Practice always
+	run reset always
+	run Instructions2 always
+	run ExpList always
+	run end always
+
+define pygaze_init new_pygaze_init
+	set tracker_type Tobii
+	set tobiiglasses_udpport 49152
+	set tobiiglasses_address "192.168.71.50"
+	set smi_send_port 4444
+	set smi_recv_port 5555
+	set smi_ip "127.0.0.1"
+	set sacc_vel_thr 35
+	set sacc_acc_thr 9500
+	set eyelink_pupil_size_mode area
+	set eyelink_force_drift_correct yes
+	set description "Initialize and calibrate eye tracker"
+	set calibrate no
+	set calbeep no
+	set alea_api_key "Contact Alea for an API key"
+	set alea_animated_calibration no
+	set _logfile automatic
+
+define pygaze_log new_pygaze_log
+	set throttle 2
+	set msg ""
+	set description "Writes information to the eye-tracker logfile"
+	set auto_log no
+
+define pygaze_start_recording new_pygaze_start_recording
+	set status_msg start_trial
+	set description "Puts the eye tracker into recording mode"
+
+define pygaze_stop_recording new_pygaze_stop_recording
+	set status_msg stop_trial
+	set description "Stops recording of eye tracking data"
+
+define feedback pause
+	set reset_variables yes
+	set duration keypress
+	set description "Provides feedback to the participant"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="Pausa!<br /><br />Prema SPAZIO per continuare l'esperimento." x=0 y=0 z_index=0
+
+define inline_script reset
+	set description "Executes Python code"
+	___run__
+	#trial and phase
+	Trial= 0
+	exp.set("Trial", Trial)
+	
+	phase= "experiment"
+	exp.set("Phase", phase)
+	__end__
+	set _prepare ""
+
+define inline_script resetTrial
+	set description "Executes Python code"
+	___run__
+	
+	#clear everything and wait
+	canvas_blank.show()
+	
+	#trial
+	Trial= Trial+1
+	exp.set("Trial", Trial)
+	__end__
+	set _prepare ""
+
